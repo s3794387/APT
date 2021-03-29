@@ -4,14 +4,16 @@
 #define ROWS   4
 #define COLS   5
 
-void readMaze(char maze[ROWS][COLS]);
-void printMaze(char maze[ROWS][COLS]);
+typedef char Env[20][20];
+
+void readMaze(Env env);
+void printMaze(Env env);
 
 int main (void) {
-   char maze[ROWS][COLS] = {};
+   Env env = {};
 
-   readMaze(maze);
-   printMaze(maze);
+   readMaze(env);
+   printMaze(env);
 
    return EXIT_SUCCESS;
 }

@@ -55,7 +55,10 @@ int main(int argc, char** argv){
 }
 
 void readEnvStdin(Env env){
-    //TODO 
+    for (int row = 0; row < ENV_DIM; ++row){
+      for (int col = 0; col < ENV_DIM; ++col){
+
+      }
 }
 
 void printEnvStdout(Env env, NodeList* solution) {
