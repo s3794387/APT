@@ -50,7 +50,7 @@ int main(int argc, char** argv){
 
     delete pathSolver;
     delete exploredPositions;
-    delete solution;
+    delete solution;    
 
 }
 
