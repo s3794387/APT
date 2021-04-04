@@ -43,7 +43,8 @@ private:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
-    
+    Node* startNode;
+    Node* endNode;
 };
 
 

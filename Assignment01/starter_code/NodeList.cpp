@@ -2,11 +2,11 @@
 #include <iostream>
 
 NodeList::NodeList(){
-    // TODO
+
 }
 
 NodeList::~NodeList(){
-    // TODO
+
 }
 
 NodeList::NodeList(NodeList& other){

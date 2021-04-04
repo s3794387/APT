@@ -1,35 +1,40 @@
 #include "Node.h"
 #include <iostream>
 
-
 Node::Node(int row, int col, int dist_traveled)
 {
-    // TODO
+    this->row = row;
+    this->col = col;
+    this->dist_traveled = dist_traveled;
 }
 
-Node::~Node(){
-    // TODO
+Node::~Node()
+{
 }
 
-int Node::getRow(){
-    // TODO
+int Node::getRow()
+{
+    return this->row;
 }
 
-int Node::getCol(){
-    // TODO
+int Node::getCol()
+{
+    return this->col;
 }
 
-int Node::getDistanceTraveled(){
-    // TODO
+int Node::getDistanceTraveled()
+{
+    return this->dist_traveled;
 }
 
 void Node::setDistanceTraveled(int dist_traveled)
 {
-    // TODO
+    this->dist_traveled = dist_traveled;
 }
 
-int Node::getEstimatedDist2Goal(Node* goal){
-    // TODO
+int Node::getEstimatedDist2Goal(Node *goal)
+{
+    return abs(goal->getCol-this->getCol) + abs(goal->getRow-this->getRow);
 }
-    
-//--------------------------------                             
+
+//--------------------------------
