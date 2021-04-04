@@ -22,7 +22,7 @@ void printEnvStdout(Env env, NodeList *solution);
 // Print out an Environment to standard output (without path) for testing.
 void printEnv(Env env);
 
-int main(intgc, char **argv)
+int main(int argc, char **argv)
 {
     // THESE ARE SOME EXAMPLE FUNCTIONS TO HELP TEST YOUR CODE
     // AS YOU WORK ON MILESTONE 2. YOU CAN UPDATE THEM YOURSELF

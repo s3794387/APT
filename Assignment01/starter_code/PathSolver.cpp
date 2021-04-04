@@ -2,7 +2,7 @@
 #include <iostream>
 
 PathSolver::PathSolver(){
-    this->nodesExplored = 0
+    this->nodesExplored = 0;
 }
 
 PathSolver::~PathSolver(){
