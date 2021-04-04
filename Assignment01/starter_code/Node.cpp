@@ -14,17 +14,17 @@ Node::~Node()
 
 int Node::getRow()
 {
-    return this->row;
+    return row;
 }
 
 int Node::getCol()
 {
-    return this->col;
+    return col;
 }
 
 int Node::getDistanceTraveled()
 {
-    return this->dist_traveled;
+    return dist_traveled;
 }
 
 void Node::setDistanceTraveled(int dist_traveled)
@@ -34,7 +34,7 @@ void Node::setDistanceTraveled(int dist_traveled)
 
 int Node::getEstimatedDist2Goal(Node *goal)
 {
-    return abs(goal->getCol-this->getCol) + abs(goal->getRow-this->getRow);
+    return abs(goal->getCol() - col) + abs(goal->getRow() - row);
 }
 
 //--------------------------------
