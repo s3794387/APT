@@ -11,58 +11,34 @@ PathSolver::~PathSolver()
 }
 
 void PathSolver::forwardSearch(Env env)
-
-// Search for the starting Node
 {
-    for (int row = 0; row < ENV_DIM; ++row)
+    // Search for the starting Node and Goal node
+    this->startNode = searchStartNode(env);
+    this->endNode = searchEndNode(env);
+
+    NodeList *openList = new NodeList();
+    openList->addElement(startNode);
+
+    int currentRow = startNode->getRow();
+    int currentCol = startNode->getCol();
+
+    bool goalReached = false;
+
+    while (goalReached == false)
     {
-        for (int col = 0; col < ENV_DIM; ++col)
+        Node *selectedNode = new Node(0, 0, 0);
+        int estimatedDist2Goal = ENV_DIM * 2;
+
+        for (int i = 0; i < openList->getLength(); i++)
         {
-            if (env[row][col] == 'S')
+            if (estimatedDist2Goal <= getEstimatedDist2Goal(openList->getNode(i), endNode))
             {
-                *startNode = Node(row, col, 0);
+                estimatedDist2Goal = getEstimatedDist2Goal(openList->getNode(i), endNode);
+                selectedNode = openList->getNode(i);
             }
         }
     }
-
-NodeList* openList;
-int currentRow = startNode->getRow();
-int currentCol = startNode->getCol();
-
-openList->addElement(startNode);
-
-for (int i = 0;i < NODE_LIST_ARRAY_MAX_SIZE; ++i){
-    if (currentRow>0){
-        if(env[currentRow-1][currentCol] == '.'){
-            Node* newNode = new Node(currentRow-1,currentCol,i+1);
-            openList->addElement(newNode);
-        }
-    }
-     if (currentRow<ENV_DIM-1){
-        if(env[currentRow+1][currentCol] == '.'){
-            Node* newNode = new Node(currentRow+1,currentCol,i+1);
-            openList->addElement(newNode);
-        }
-    }
-     if (currentCol>0){
-        if(env[currentRow][currentCol-1] == '.'){
-            Node* newNode = new Node(currentRow,currentCol-1,i+1);
-            openList->addElement(newNode);
-        }
-    }
-     if (currentCol<ENV_DIM+1){
-        if(env[currentRow][currentCol+1] == '.'){
-            Node* newNode = new Node(currentRow,currentCol+1,i+1);
-            openList->addElement(newNode);
-        }
-    }
-    
 }
-
-}
-
-
-
 
 NodeList *PathSolver::getNodesExplored()
 {
@@ -75,3 +51,62 @@ NodeList *PathSolver::getPath(Env env)
 }
 
 //-----------------------------
+
+Node *searchStartNode(Env env)
+{
+    Node *sNode = new Node(0, 0, 0);
+
+    for (int row = 0; row < ENV_DIM; ++row)
+    {
+        for (int col = 0; col < ENV_DIM; ++col)
+        {
+            if (env[row][col] == 'S')
+            {
+                *sNode = Node(row, col, 0);
+            }
+        }
+    }
+    return sNode;
+}
+
+Node *searchEndNode(Env env)
+{
+    Node *eNode = new Node(0, 0, 0);
+
+    for (int row = 0; row < ENV_DIM; ++row)
+    {
+        for (int col = 0; col < ENV_DIM; ++col)
+        {
+            if (env[row][col] == 'G')
+            {
+                *eNode = Node(row, col, 0);
+            }
+        }
+    }
+    return eNode;
+}
+
+int getEstimatedDist2Goal(Node *node, Node *goal)
+{
+    int dist = node->getDistanceTraveled() + abs(node->getCol() - goal->getCol()) + abs(node->getRow() - goal->getRow());
+    return dist;
+}
+
+NodeList *searchNeibouringNodes(Env env, Node *node)
+{
+    int currentRow = node->getRow();
+    int currentCol = node->getCol();
+
+    NodeList *neighbouringNodes = new NodeList();
+    Node *node = new Node(0, 0, 0);
+
+    if (currentCol > 0)
+    {
+        if (env[currentRow][currentCol - 1] == '.')
+        {
+            node = new Node(currentRow, currentCol, node->getDistanceTraveled());
+
+            neighbouringNodes->addElement(node);
+        }
+    }
+}
