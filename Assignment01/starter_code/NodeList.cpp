@@ -10,7 +10,8 @@ NodeList::~NodeList() {}
 
 NodeList::NodeList(NodeList &other)
 {
-    for (int i = 0; i < other.getLength(); i++)
+    length = other.getLength();
+    for (int i = 0; i < length; i++)
     {
         this->nodes[i] = other.getNode(i);
     }
@@ -30,4 +31,33 @@ void NodeList::addElement(Node *newPos)
 Node *NodeList::getNode(int i)
 {
     return nodes[i];
+}
+
+void NodeList::addElements(NodeList *differentNodeList)
+{
+    for (int i = 0; i < differentNodeList->getLength(); i++)
+    {
+        bool dublicate = false;
+        for (int j = 0; j < length; j++)
+        {
+            if (nodes[j]->sameNode(differentNodeList->getNode(i)))
+            {
+                dublicate = true;
+            }
+        }
+        if (dublicate == false)
+        {
+            this->addElement(differentNodeList->getNode(i));
+        }
+    }
+}
+
+void NodeList::printNodes()
+{
+    for (int i = 0; i < length; i++)
+    {
+        std::cout << nodes[i]->getRow() << ",";
+        std::cout << nodes[i]->getCol() << ",";
+        std::cout << nodes[i]->getDistanceTraveled() << std::endl;
+    }
 }

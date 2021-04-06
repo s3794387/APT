@@ -47,6 +47,7 @@ private:
     Node *startNode;
     Node *endNode;
 
+    
 };
 
 #endif //COSC_ASSIGN_ONE_PATHSOLVER

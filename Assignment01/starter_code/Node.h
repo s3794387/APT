@@ -29,7 +29,7 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
-
+    bool sameNode(Node* node);
 
 private:
     /*                                           */
