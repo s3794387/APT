@@ -47,7 +47,9 @@ private:
     Node *startNode;
     Node *endNode;
 
-    
+    // search for startNode 'S' and endNode 'G' from the environment
+    // and update local variables
+    void updateEnvNodes(Env env);
 };
 
 #endif //COSC_ASSIGN_ONE_PATHSOLVER

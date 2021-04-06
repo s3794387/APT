@@ -20,16 +20,15 @@ NodeList &searchNeibouringNodes(Env env, Node *node);
 void PathSolver::forwardSearch(Env env)
 {
     // Search for the starting Node and Goal node
-    this->startNode = searchStartNode(env);
-    this->endNode = searchEndNode(env);
+    updateEnvNodes(env);
 
     NodeList *openList = new NodeList();
+    NodeList *closeList = new NodeList();
+
     openList->addElement(startNode);
 
     int manhattanDistance = ENV_DIM * 2;
-    int estimatedDist2Goal = ENV_DIM * 2;
-
-    int distanceTravelled = 0;
+    int estimatedDist2Goal = ENV_DIM * ENV_DIM;
 
     Node *selectedNode = new Node(0, 0, 0);
     NodeList *neighbouringNodes = new NodeList();
@@ -39,17 +38,21 @@ void PathSolver::forwardSearch(Env env)
 
         for (int i = 0; i < openList->getLength(); i++)
         {
-            if (estimatedDist2Goal >= getEstimatedDist2Goal(openList->getNode(i), endNode) && openList->getNode(i)->getDistanceTraveled() == distanceTravelled)
+            if (estimatedDist2Goal >= getEstimatedDist2Goal(openList->getNode(i), endNode) && !closeList->contains(*(openList->getNode(i))))
             {
                 estimatedDist2Goal = getEstimatedDist2Goal(openList->getNode(i), endNode);
                 selectedNode = openList->getNode(i);
             }
-            neighbouringNodes = new NodeList(searchNeibouringNodes(env, selectedNode));
-            openList->addElements(neighbouringNodes);
-            distanceTravelled++;
-            openList->printNodes();
-            manhattanDistance = estimatedDist2Goal - distanceTravelled;
         }
+
+        neighbouringNodes = new NodeList(searchNeibouringNodes(env, selectedNode));
+        openList->addElements(neighbouringNodes);
+        closeList->addElement(selectedNode);
+
+        openList->printNodes();
+        manhattanDistance = abs(selectedNode->getCol() - endNode->getCol()) + abs(selectedNode->getRow() - endNode->getRow());
+        std::cout << manhattanDistance << std::endl;
+        estimatedDist2Goal = ENV_DIM * ENV_DIM;
     }
 }
 
@@ -65,9 +68,8 @@ NodeList *PathSolver::getPath(Env env)
 
 //-----------------------------
 
-Node *searchStartNode(Env env)
+void PathSolver::updateEnvNodes(Env env)
 {
-    Node *sNode = new Node(0, 0, 0);
 
     for (int row = 0; row < ENV_DIM; ++row)
     {
@@ -75,28 +77,14 @@ Node *searchStartNode(Env env)
         {
             if (env[row][col] == 'S')
             {
-                *sNode = Node(row, col, 0);
+                startNode = new Node(row, col, 0);
             }
-        }
-    }
-    return sNode;
-}
-
-Node *searchEndNode(Env env)
-{
-    Node *eNode = new Node(0, 0, 0);
-
-    for (int row = 0; row < ENV_DIM; ++row)
-    {
-        for (int col = 0; col < ENV_DIM; ++col)
-        {
-            if (env[row][col] == 'G')
+            else if (env[row][col] == 'G')
             {
-                *eNode = Node(row, col, 0);
+                endNode = new Node(row, col, 0);
             }
         }
     }
-    return eNode;
 }
 
 int getEstimatedDist2Goal(Node *node, Node *goal)
@@ -115,7 +103,7 @@ NodeList &searchNeibouringNodes(Env env, Node *node)
 
     if (currentCol > 0)
     {
-        if (env[currentRow][currentCol - 1] == '.')
+        if (env[currentRow][currentCol - 1] == '.' || env[currentRow][currentCol - 1] == 'G')
         {
             tempNode = new Node(currentRow, currentCol - 1, node->getDistanceTraveled() + 1);
 
@@ -124,7 +112,7 @@ NodeList &searchNeibouringNodes(Env env, Node *node)
     }
     if (currentCol < ENV_DIM - 1)
     {
-        if (env[currentRow][currentCol + 1] == '.')
+        if (env[currentRow][currentCol + 1] == '.' || env[currentRow][currentCol + 1] == 'G')
         {
             tempNode = new Node(currentRow, currentCol + 1, node->getDistanceTraveled() + 1);
 
@@ -133,7 +121,7 @@ NodeList &searchNeibouringNodes(Env env, Node *node)
     }
     if (currentRow > 0)
     {
-        if (env[currentRow - 1][currentCol] == '.')
+        if (env[currentRow - 1][currentCol] == '.' || env[currentRow - 1][currentCol] == 'G')
         {
             tempNode = new Node(currentRow - 1, currentCol, node->getDistanceTraveled() + 1);
 
@@ -142,7 +130,7 @@ NodeList &searchNeibouringNodes(Env env, Node *node)
     }
     if (currentRow < ENV_DIM - 1)
     {
-        if (env[currentRow + 1][currentCol] == '.')
+        if (env[currentRow + 1][currentCol] == '.' || env[currentRow + 1][currentCol] == 'G')
         {
             tempNode = new Node(currentRow + 1, currentCol, node->getDistanceTraveled() + 1);
 

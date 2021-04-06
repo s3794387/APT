@@ -34,7 +34,9 @@ public:
 
     void addElements(NodeList *differentNodeList);
 
-    void printNodes();  
+    bool contains(Node &node);
+
+    void printNodes();
 
 private:
     /*                                           */

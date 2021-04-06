@@ -37,15 +37,7 @@ void NodeList::addElements(NodeList *differentNodeList)
 {
     for (int i = 0; i < differentNodeList->getLength(); i++)
     {
-        bool dublicate = false;
-        for (int j = 0; j < length; j++)
-        {
-            if (nodes[j]->sameNode(differentNodeList->getNode(i)))
-            {
-                dublicate = true;
-            }
-        }
-        if (dublicate == false)
+        if (!this->contains(*(differentNodeList->getNode(i))))
         {
             this->addElement(differentNodeList->getNode(i));
         }
@@ -60,4 +52,19 @@ void NodeList::printNodes()
         std::cout << nodes[i]->getCol() << ",";
         std::cout << nodes[i]->getDistanceTraveled() << std::endl;
     }
+}
+
+bool NodeList::contains(Node &node)
+{
+    bool dublicate = false;
+
+    for (int i = 0; i < length; i++)
+    {
+        if (nodes[i]->sameNode(&node))
+        {
+            dublicate = true;
+        }
+    }
+
+    return dublicate;
 }
