@@ -32,7 +32,6 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
 
-    void addElements(NodeList *differentNodeList);
 
     bool contains(Node &node);
 

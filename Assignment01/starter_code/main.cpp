@@ -37,25 +37,26 @@ int main(int argc, char **argv)
     // Load Environment
     Env env;
     readEnvStdin(env);
-    printEnv(env);
 
     // Solve using forwardSearch
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
     PathSolver *pathSolver = new PathSolver();
     pathSolver->forwardSearch(env);
 
-    // NodeList *exploredPositions = nullptr;
-    // exploredPositions = pathSolver->getNodesExplored();
-
+    NodeList *exploredPositions = nullptr;
+    exploredPositions = pathSolver->getNodesExplored();
+    exploredPositions->printNodes();
     // Get the path
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
-    // NodeList *solution = pathSolver->getPath(env);
+    NodeList *solution = pathSolver->getPath(env);
 
-    // printEnvStdout(env, solution);
+    solution->printNodes();
 
-    // delete pathSolver;
-    // delete exploredPositions;
-    // delete solution;
+    printEnvStdout(env, solution);
+
+    delete pathSolver;
+    delete exploredPositions;
+    delete solution;
 }
 
 void readEnvStdin(Env env)
@@ -82,7 +83,36 @@ void printEnv(Env env)
 }
 void printEnvStdout(Env env, NodeList *solution)
 {
-    //TODO
+    int row = 0;
+    int col = 0;
+
+    for (int i = 1; i < solution->getLength()-1; i++)
+    {
+        row = solution->getNode(i)->getRow();
+        col = solution->getNode(i)->getCol();
+
+        if (row < solution->getNode(i + 1)->getRow())
+        {
+            env[row][col] = 'v';
+        }
+
+        if (row > solution->getNode(i + 1)->getRow())
+        {
+            env[row][col] = '^';
+        }
+
+        if (col < solution->getNode(i + 1)->getCol())
+        {
+            env[row][col] = '>';
+        }
+
+        if (col > solution->getNode(i + 1)->getCol())
+        {
+            env[row][col] = '<';
+        }
+    }
+
+    printEnv(env);
 }
 
 void testNode()

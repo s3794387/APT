@@ -33,17 +33,6 @@ Node *NodeList::getNode(int i)
     return nodes[i];
 }
 
-void NodeList::addElements(NodeList *differentNodeList)
-{
-    for (int i = 0; i < differentNodeList->getLength(); i++)
-    {
-        if (!this->contains(*(differentNodeList->getNode(i))))
-        {
-            this->addElement(differentNodeList->getNode(i));
-        }
-    }
-}
-
 void NodeList::printNodes()
 {
     for (int i = 0; i < length; i++)
@@ -68,3 +57,4 @@ bool NodeList::contains(Node &node)
 
     return dublicate;
 }
+

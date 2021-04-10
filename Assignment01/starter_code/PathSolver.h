@@ -50,6 +50,12 @@ private:
     // search for startNode 'S' and endNode 'G' from the environment
     // and update local variables
     void updateEnvNodes(Env env);
+
+    // Return a NodeList of no more than 4 neighbouring Nodes of a given Node
+    NodeList *searchNeibouringNodes(Env env, Node *node);
+
+    // Return a NodeList that is a reversed version of a given NodeList
+    NodeList *reverseList(NodeList *sample);
 };
 
 #endif //COSC_ASSIGN_ONE_PATHSOLVER

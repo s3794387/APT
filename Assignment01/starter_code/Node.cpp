@@ -34,7 +34,10 @@ void Node::setDistanceTraveled(int dist_traveled)
 
 int Node::getEstimatedDist2Goal(Node *goal)
 {
-    return abs(goal->getCol() - col) + abs(goal->getRow() - row);
+    int dist2Goal = dist_traveled + abs(col - goal->getCol()) + abs(row - goal->getRow());
+
+    return dist2Goal;
+
 }
 
 //--------------------------------
