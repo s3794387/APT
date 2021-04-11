@@ -63,6 +63,8 @@ void PathSolver::forwardSearch(Env env)
     }
     // Produces a DEEP COPY of the nodesExplored
     nodesExplored = new NodeList(*closeList);
+    openList->printNodes();
+    nodesExplored->printNodes();
 }
 
 NodeList *PathSolver::getNodesExplored()
