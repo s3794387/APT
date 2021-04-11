@@ -1,0 +1,18 @@
+../assign1 < test01.env >actual01.out
+diff actual01.out test01.out
+../assign1 < test02.env >actual02.out
+diff actual02.out test02.out
+../assign1 < test03.env >actual03.out
+diff actual03.out test03.out
+../assign1 < test04.env >actual04.out
+diff actual04.out test04.out
+../assign1 < test05.env >actual05.out
+diff actual05.out test05.out
+../assign1 < test06.env >actual06.out
+diff actual06.out test06.out
+../assign1 < test07.env >actual07.out
+diff actual07.out test07.out
+../assign1 < test08.env >actual08.out
+diff actual08.out test08.out
+../assign1 < test09.env >actual09.out
+diff actual09.out test09.out
