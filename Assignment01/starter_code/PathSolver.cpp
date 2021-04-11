@@ -56,9 +56,9 @@ void PathSolver::forwardSearch(Env env)
         }
         closeList->addElement(selectedNode);
 
-        closeList->printNodes();
+        // closeList->printNodes();
 
-        std::cout << manhattanDistance << std::endl;
+        // std::cout << manhattanDistance << std::endl;
         estimatedDist2Goal = ENV_DIM * ENV_DIM;
     }
     // Produces a DEEP COPY of the nodesExplored
@@ -78,11 +78,14 @@ NodeList *PathSolver::getPath(Env env)
 
     NodeList *endList = new NodeList();
 
+    bool nodeFound;
+
     endList->addElement(endNode);
 
-    for (int i = 0; i < endNode->getDistanceTraveled()-1; i++)
+    for (int i = 0; i < endNode->getDistanceTraveled() - 1; i++)
     {
         neighbouringNodes = searchNeibouringNodes(env, endList->getNode(i));
+        nodeFound = false;
 
         for (int j = 0; j < neighbouringNodes->getLength(); j++)
         {
@@ -90,9 +93,11 @@ NodeList *PathSolver::getPath(Env env)
 
             for (int k = 0; k < nodesExplored->getLength(); k++)
             {
-                if (nodesExplored->getNode(k)->sameNode(neighbouringNodes->getNode(j)) && nodesExplored->getNode(k)->getDistanceTraveled() == neighbouringNodes->getNode(j)->getDistanceTraveled())
+
+                if (nodesExplored->getNode(k)->sameNode(neighbouringNodes->getNode(j)) && nodesExplored->getNode(k)->getDistanceTraveled() == neighbouringNodes->getNode(j)->getDistanceTraveled() && !nodeFound)
                 {
                     endList->addElement(neighbouringNodes->getNode(j));
+                    nodeFound = true;
                 }
             }
         }
@@ -100,9 +105,9 @@ NodeList *PathSolver::getPath(Env env)
 
     endList->addElement(startNode);
 
-    endList->printNodes();
+    // endList->printNodes();
     path = reverseList(endList);
-    path->printNodes();
+    // path->printNodes();
     return path;
 }
 

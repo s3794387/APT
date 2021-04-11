@@ -45,12 +45,12 @@ int main(int argc, char **argv)
 
     NodeList *exploredPositions = nullptr;
     exploredPositions = pathSolver->getNodesExplored();
-    exploredPositions->printNodes();
+    // exploredPositions->printNodes();
     // Get the path
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
     NodeList *solution = pathSolver->getPath(env);
 
-    solution->printNodes();
+    // solution->printNodes();
 
     printEnvStdout(env, solution);
 
@@ -78,7 +78,7 @@ void printEnv(Env env)
         {
             std::cout << env[row][col];
         }
-        std::cout << " " << std::endl;
+        std::cout << std::endl;
     }
 }
 void printEnvStdout(Env env, NodeList *solution)
@@ -86,7 +86,7 @@ void printEnvStdout(Env env, NodeList *solution)
     int row = 0;
     int col = 0;
 
-    for (int i = 1; i < solution->getLength()-1; i++)
+    for (int i = 1; i < solution->getLength() - 1; i++)
     {
         row = solution->getNode(i)->getRow();
         col = solution->getNode(i)->getCol();
