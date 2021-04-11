@@ -32,10 +32,13 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
 
+    // Constructor for Milestone 4
     NodeList(int rows, int cols);
 
+    // Copy constructor for Milestone 4
     NodeList(NodeList &other, int rows, int cols);
 
+    // return a boolean to check if a nodeList contains a certain Node
     bool contains(Node &node);
 
     void printNodes();

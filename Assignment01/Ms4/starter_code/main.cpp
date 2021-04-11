@@ -1,3 +1,21 @@
+/* 
+ * My approach for Milestone 2 is to follow the pseudo code given in the assignment specs, create
+ * helper functions as I go and create small tests to check for errors. I did the same for Milestone
+ * 3 by regularly printing out nodeLists to make sure that every node was added correctly. For Milestone
+ * 4, after implementing the new nodeList and Env, I had some difficulties figuring out how to read 
+ * the standard input correctly and was constantly getting segmentation fault. One of the bigest challenge 
+ * that I've encounterd was durring Milestone3 when I had to find the correct neighbouring Nodes and add 
+ * it to the pathNodes. I spent quite some time trying to find the errors and figured that there were several
+ * nodes in the neighbouringNodes that has the same distance travelled and co-ordinates with the nodes
+ * from the nodesExplored. I resolved the problem by only add one node from the neighbouring nodes and 
+ * ignore the rest.
+ * 
+ * Test files are located in Tests folder, some test cases will be different from actual because there are
+ * several shortest paths to Goal and expected output is only one of them. 
+*/
+
+
+
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
@@ -12,10 +30,14 @@
 void testNode();
 void testNodeList();
 
-// Read a environment from standard input.
+// Read an environment from standard input, pass in the address of rows and cols to be modified
 void readEnvStdin(Env &env, int &rows, int &cols);
 
+// Dynamically allocate memory for the environment
 Env make_env(const int rows, const int cols);
+
+//Delete a dymanically allocated environment
+void delete_env(Env env, int rows, int cols);
 
 // Print out a Environment to standard output with path.
 // To be implemented for Milestone 3
@@ -38,8 +60,12 @@ int main(int argc, char **argv)
 
     // Load Environment
     Env env = nullptr;
+
+    // Initialize rows and cols variables to be used later by other functions
     int rows;
     int cols;
+
+    // Read Environment from standard input, pass in rows and cols to be modified
     readEnvStdin(env, rows, cols);
 
     // Solve using forwardSearch
@@ -50,6 +76,7 @@ int main(int argc, char **argv)
     NodeList *exploredPositions = nullptr;
     exploredPositions = pathSolver->getNodesExplored();
     // exploredPositions->printNodes();
+
     // Get the path
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
     NodeList *solution = pathSolver->getPath(env);
@@ -58,6 +85,7 @@ int main(int argc, char **argv)
 
     printEnvStdout(env, solution, rows, cols);
 
+    delete_env(env, rows, cols);
     delete pathSolver;
     delete exploredPositions;
     delete solution;
@@ -65,35 +93,49 @@ int main(int argc, char **argv)
 
 void readEnvStdin(Env &env, int &rows, int &cols)
 {
-    int row = 0;
+    // value of 1 because environment cannot be empty
+    int row = 1;
     int col = 0;
+    int index = 0;
 
+    // a string to store environment characters
     std::string envString = "";
 
-    while (!std::cin.eof())
-    {
+    char c;
 
-        char c = std::cin.get();
-        if (c != '\n' && c != '\0')
+    // Loop through standard input until the end
+    while (std::cin.get(c))
+    {
+        // For Testing  purpose
+        // std::cout << c << std::endl;
+
+        // Check if standard input returns a newline
+        if (c != '\n')
         {
             envString += c;
-            col++;
+            index++;
         }
         else
         {
+            //when standard input reaches a new line, set value of col if not yet set
+            if (col == 0)
+            {
+                col = index;
+            }
             row++;
         }
     }
 
+    // Change variables accordingly
     rows = row;
-    cols = (col - 1) / row;
+    cols = col;
 
     env = make_env(rows, cols);
 
+    // Loop through the environment and set values from the environment string
     for (int i = 0; i < (rows * cols); i++)
     {
-
-        env[i / rows][i % cols] = envString[i];
+        env[i / cols][i % cols] = envString[i];
     }
 }
 
@@ -114,6 +156,7 @@ void printEnvStdout(Env env, NodeList *solution, int rows, int cols)
     int row = 0;
     int col = 0;
 
+    // Replace robot path based on the co-ordinates of current node and the node before it
     for (int i = 1; i < solution->getLength() - 1; i++)
     {
         row = solution->getNode(i)->getRow();
@@ -206,10 +249,6 @@ Env make_env(int rows, int cols)
     return env;
 }
 
-/*
- * This function is to help you delete a 
- * dynamically allocated 2D Environment.
- */
 void delete_env(Env env, int rows, int cols)
 {
     if (rows >= 0 && cols >= 0)

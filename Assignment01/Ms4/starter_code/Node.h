@@ -29,6 +29,8 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
+
+    // check if the co-ordinates of the current node is the same as the passed in node
     bool sameNode(Node* node);
 
 private:

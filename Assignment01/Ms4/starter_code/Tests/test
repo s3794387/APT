@@ -16,3 +16,11 @@ diff actual07.out test07.out
 diff actual08.out test08.out
 ../assign1 < test09.env >actual09.out
 diff actual09.out test09.out
+../assign1 < test10.env >actual10.out
+diff actual10.out test10.out
+../assign1 < test11.env >actual11.out
+diff actual11.out test11.out
+../assign1 < test12.env >actual12.out
+diff actual12.out test12.out
+../assign1 < test13.env >actual13.out
+diff actual13.out test13.out

@@ -6,7 +6,10 @@ NodeList::NodeList()
     this->length = 0;
 }
 
-NodeList::~NodeList() {}
+NodeList::~NodeList() {
+    delete[] nodes;
+
+}
 
 NodeList::NodeList(NodeList &other)
 {
