@@ -3,11 +3,16 @@
 
 PathSolver::PathSolver()
 {
-    this->nodesExplored = 0;
 }
 
 PathSolver::~PathSolver()
 {
+}
+
+PathSolver::PathSolver(int rows, int cols)
+{
+    this->rows = rows;
+    this->cols = cols;
 }
 
 void PathSolver::forwardSearch(Env env)
@@ -15,15 +20,15 @@ void PathSolver::forwardSearch(Env env)
 
     updateEnvNodes(env);
 
-    NodeList *openList = new NodeList();
-    NodeList *closeList = new NodeList();
+    NodeList *openList = new NodeList(rows, cols);
+    NodeList *closeList = new NodeList(rows, cols);
 
-    NodeList *neighbouringNodes = new NodeList();
+    NodeList *neighbouringNodes = new NodeList(rows, cols);
 
     openList->addElement(startNode);
 
-    int manhattanDistance = ENV_DIM * 2;
-    int estimatedDist2Goal = ENV_DIM * ENV_DIM;
+    int manhattanDistance = rows * cols * 2;
+    int estimatedDist2Goal = rows * cols;
 
     Node *selectedNode = nullptr;
 
@@ -59,12 +64,13 @@ void PathSolver::forwardSearch(Env env)
         // closeList->printNodes();
 
         // std::cout << manhattanDistance << std::endl;
-        estimatedDist2Goal = ENV_DIM * ENV_DIM;
+        estimatedDist2Goal = rows * cols;
     }
+    // closeList->printNodes();
     // Produces a DEEP COPY of the nodesExplored
-    nodesExplored = new NodeList(*closeList);
-    openList->printNodes();
-    nodesExplored->printNodes();
+    nodesExplored = new NodeList(*closeList, rows, cols);
+    // openList->printNodes();
+    // nodesExplored->printNodes();
 }
 
 NodeList *PathSolver::getNodesExplored()
@@ -78,7 +84,7 @@ NodeList *PathSolver::getPath(Env env)
     NodeList *path = nullptr;
     NodeList *neighbouringNodes = nullptr;
 
-    NodeList *endList = new NodeList();
+    NodeList *endList = new NodeList(rows, cols);
 
     bool nodeFound;
 
@@ -118,9 +124,9 @@ NodeList *PathSolver::getPath(Env env)
 void PathSolver::updateEnvNodes(Env env)
 {
 
-    for (int row = 0; row < ENV_DIM; ++row)
+    for (int row = 0; row < rows; ++row)
     {
-        for (int col = 0; col < ENV_DIM; ++col)
+        for (int col = 0; col < cols; ++col)
         {
             if (env[row][col] == 'S')
             {
@@ -140,7 +146,7 @@ NodeList *PathSolver::searchNeibouringNodes(Env env, Node *node)
     int currentRow = node->getRow();
     int currentCol = node->getCol();
 
-    NodeList *neighbouringNodes = new NodeList();
+    NodeList *neighbouringNodes = new NodeList(rows, cols);
 
     int distanceTraveled = node->getDistanceTraveled();
 
@@ -153,7 +159,7 @@ NodeList *PathSolver::searchNeibouringNodes(Env env, Node *node)
             neighbouringNodes->addElement(new Node(currentRow, currentCol - 1, distanceTraveled));
         }
     }
-    if (currentCol < ENV_DIM - 1)
+    if (currentCol < cols - 1)
     {
         if (env[currentRow][currentCol + 1] == '.' || env[currentRow][currentCol + 1] == 'G')
         {
@@ -167,7 +173,7 @@ NodeList *PathSolver::searchNeibouringNodes(Env env, Node *node)
             neighbouringNodes->addElement(new Node(currentRow - 1, currentCol, distanceTraveled));
         }
     }
-    if (currentRow < ENV_DIM - 1)
+    if (currentRow < rows - 1)
     {
         if (env[currentRow + 1][currentCol] == '.' || env[currentRow + 1][currentCol] == 'G')
         {
@@ -179,7 +185,7 @@ NodeList *PathSolver::searchNeibouringNodes(Env env, Node *node)
 
 NodeList *PathSolver::reverseList(NodeList *sample)
 {
-    NodeList *reverseList = new NodeList();
+    NodeList *reverseList = new NodeList(rows, cols);
     for (int i = sample->getLength() - 1; i >= 0; i--)
     {
         reverseList->addElement(sample->getNode(i));

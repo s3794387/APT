@@ -16,6 +16,23 @@ NodeList::NodeList(NodeList &other)
         this->nodes[i] = other.getNode(i);
     }
 }
+NodeList::NodeList(NodeList &other, int rows, int cols)
+{
+    {
+        length = other.getLength();
+        nodes = new Node *[rows * cols];
+        for (int i = 0; i < length; i++)
+        {
+            this->nodes[i] = other.getNode(i);
+        }
+    }
+}
+
+NodeList::NodeList(int rows, int cols)
+{
+    this->length = 0;
+    nodes = new Node *[rows * cols];
+}
 
 int NodeList::getLength()
 {
@@ -57,4 +74,3 @@ bool NodeList::contains(Node &node)
 
     return dublicate;
 }
-

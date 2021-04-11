@@ -33,6 +33,8 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
 
+    PathSolver(int rows, int cols);
+
 private:
     /*                                           */
     /* DO NOT MOFIFY THESE VARIABLES             */
@@ -46,6 +48,9 @@ private:
     /*                                           */
     Node *startNode;
     Node *endNode;
+
+    int rows;
+    int cols;
 
     // search for startNode 'S' and endNode 'G' from the environment
     // and update local variables

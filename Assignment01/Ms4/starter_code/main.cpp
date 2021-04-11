@@ -12,16 +12,17 @@
 void testNode();
 void testNodeList();
 
-
 // Read a environment from standard input.
-void readEnvStdin(Env env);
+void readEnvStdin(Env &env, int &rows, int &cols);
+
+Env make_env(const int rows, const int cols);
 
 // Print out a Environment to standard output with path.
 // To be implemented for Milestone 3
-void printEnvStdout(Env env, NodeList *solution);
+void printEnvStdout(Env env, NodeList *solution, int rows, int cols);
 
 // Print out an Environment to standard output (without path) for testing.
-void printEnv(Env env);
+void printEnv(Env env, int rows, int cols);
 
 int main(int argc, char **argv)
 {
@@ -36,12 +37,14 @@ int main(int argc, char **argv)
     //           << std::endl;
 
     // Load Environment
-    Env env;
-    readEnvStdin(env);
+    Env env = nullptr;
+    int rows;
+    int cols;
+    readEnvStdin(env, rows, cols);
 
     // Solve using forwardSearch
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
-    PathSolver *pathSolver = new PathSolver();
+    PathSolver *pathSolver = new PathSolver(rows, cols);
     pathSolver->forwardSearch(env);
 
     NodeList *exploredPositions = nullptr;
@@ -53,36 +56,60 @@ int main(int argc, char **argv)
 
     // solution->printNodes();
 
-    printEnvStdout(env, solution);
+    printEnvStdout(env, solution, rows, cols);
 
     delete pathSolver;
     delete exploredPositions;
     delete solution;
 }
 
-void readEnvStdin(Env env)
+void readEnvStdin(Env &env, int &rows, int &cols)
 {
-    for (int row = 0; row < ENV_DIM; ++row)
+    int row = 0;
+    int col = 0;
+
+    std::string envString = "";
+
+    while (!std::cin.eof())
     {
-        for (int col = 0; col < ENV_DIM; ++col)
+
+        char c = std::cin.get();
+        if (c != '\n' && c != '\0')
         {
-            std::cin >> env[row][col];
+            envString += c;
+            col++;
         }
+        else
+        {
+            row++;
+        }
+    }
+
+    rows = row;
+    cols = (col - 1) / row;
+
+    env = make_env(rows, cols);
+
+    for (int i = 0; i < (rows * cols); i++)
+    {
+
+        env[i / rows][i % cols] = envString[i];
     }
 }
 
-void printEnv(Env env)
+void printEnv(Env env, int rows, int cols)
 {
-    for (int row = 0; row < ENV_DIM; ++row)
+
+    for (int row = 0; row < rows; ++row)
     {
-        for (int col = 0; col < ENV_DIM; ++col)
+        for (int col = 0; col < cols; ++col)
         {
             std::cout << env[row][col];
         }
         std::cout << std::endl;
     }
 }
-void printEnvStdout(Env env, NodeList *solution)
+void printEnvStdout(Env env, NodeList *solution, int rows, int cols)
 {
     int row = 0;
     int col = 0;
@@ -113,7 +140,7 @@ void printEnvStdout(Env env, NodeList *solution)
         }
     }
 
-    printEnv(env);
+    printEnv(env, rows, cols);
 }
 
 void testNode()
@@ -160,6 +187,39 @@ void testNodeList()
     std::cout << getB->getDistanceTraveled() << std::endl;
 
     // Print out the NodeList
-    std::cout << "PRINTING OUT A NODELIST IS AN EXERCISE FOR YOU TO DO" << std::endl;
+    nodeList->printNodes();
 }
 
+Env make_env(int rows, int cols)
+{
+    Env env = nullptr;
+
+    if (rows >= 0 && cols >= 0)
+    {
+        env = new char *[rows];
+        for (int i = 0; i != rows; ++i)
+        {
+            env[i] = new char[cols];
+        }
+    }
+
+    return env;
+}
+
+/*
+ * This function is to help you delete a 
+ * dynamically allocated 2D Environment.
+ */
+void delete_env(Env env, int rows, int cols)
+{
+    if (rows >= 0 && cols >= 0)
+    {
+        for (int i = 0; i != rows; ++i)
+        {
+            delete env[i];
+        }
+        delete env;
+    }
+
+    return;
+}
